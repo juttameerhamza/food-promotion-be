@@ -24,7 +24,7 @@ const initSeeding = async () => {
             role: 'admin'
         });
 
-        console.log('-----------Admin created!--------------');
+        console.log('------------Admin created!--------------');
         console.log('Admin: ', user);
         process.exit(0);
     } catch (error) {
