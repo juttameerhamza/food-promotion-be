@@ -1,0 +1,6 @@
+PORT=8000
+
+DB_URL=mongodb://localhost/food-promotion
+
+JWT_SECRET=food-dev-super-ultra-secure-and-long-secret
+JWT_EXPIRES_IN=90d
