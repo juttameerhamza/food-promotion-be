@@ -6,4 +6,8 @@ router
     .get(restaurantController.getAllRestaurant)
     .post(restaurantController.createRestaurant);
 
+router
+    .route('/:id')
+    .get(restaurantController.getOneRestaurant);
+
 module.exports = router;

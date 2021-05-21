@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+// location [lat, lng]
+
 const restaurantSchema = new mongoose.Schema({
     restaurantName: {
         type: String,

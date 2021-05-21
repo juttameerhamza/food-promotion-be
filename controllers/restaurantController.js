@@ -52,3 +52,14 @@ exports.createRestaurant = catchAsync(async (req, res, next) => {
         }
     });
 });
+
+exports.getOneRestaurant = catchAsync(async (req, res, next) => {
+    const restaurant = await User.findOne({ _id: req.params.id, role: 'restaurant', isDeleted: false, isActive: true }).lean().populate('restaurantProfile');
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            restaurant
+        }
+    });
+});
