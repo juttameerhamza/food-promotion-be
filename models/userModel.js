@@ -40,6 +40,10 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: 'Restaurant'
     },
+    riderProfile: {
+        type: mongoose.Types.ObjectId,
+        ref: 'Rider'
+    },
     isDeleted: {
         type: Boolean,
         default: false,

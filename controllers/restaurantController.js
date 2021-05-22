@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const User = require('../models/userModel');
 const Restaurant = require('../models/restaurantModel');
 const catchAsync = require('../utils/catchAsync');
@@ -24,13 +23,11 @@ exports.createRestaurant = catchAsync(async (req, res, next) => {
         email,
         password,
         restaurantName,
-        restaurantAddress
+        restaurantAddress,
+        restaurantLocation
     } = req.body;
 
-    console.log('req.body', req.body);
-
-
-    const restaurant = await Restaurant.create({ restaurantName, restaurantAddress });
+    const restaurant = await Restaurant.create({ restaurantName, restaurantAddress, restaurantLocation });
 
     const user = await User.create({
         firstName,

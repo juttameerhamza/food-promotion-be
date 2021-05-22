@@ -24,7 +24,7 @@ exports.login = catchAsync(async (req, res, next) => {
         return next(new ApiError('Please provide email and password!', 400));
     }
 
-    const user = await User.findOne({ email, password, isActive: true, isDeleted: false })
+    const user = await User.findOne({ email, password, isActive: true, isDeleted: false }).lean().populate('riderProfile').populate('restaurantProfile')
 
     if (!user) {
         return next(new ApiError('Incorrect email or password', 401));

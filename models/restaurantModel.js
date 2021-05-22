@@ -10,6 +10,14 @@ const restaurantSchema = new mongoose.Schema({
     restaurantAddress: {
         type: String,
         required: [true, 'Please provide restaurant address!']
+    },
+    restaurantLocation: {
+        type: {
+            type: String,
+            default: 'Point',
+            enum: ['Point']
+        },
+        coordinates: [Number]
     }
 });
 
