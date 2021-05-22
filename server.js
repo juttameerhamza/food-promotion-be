@@ -14,6 +14,6 @@ mongoose
 const port = process.env.PORT || 3000;
 const envoironment = process.env.NODE_ENV;
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
     console.log(`Application running on ${port} and in ${envoironment} mode...`);
 });

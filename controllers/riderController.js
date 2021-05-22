@@ -49,7 +49,7 @@ exports.createRider = catchAsync(async (req, res, next) => {
 
 exports.updateLocation = catchAsync(async (req, res, next) => {
     const { currentLocation, riderProfileId } = req.body;
-
+    console.log(req.body);
     const rider = await Rider.findByIdAndUpdate(riderProfileId, { currentLocation });
 
     res.status(200).json({

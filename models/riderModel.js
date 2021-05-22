@@ -11,6 +11,10 @@ const riderSchema = new mongoose.Schema({
         },
         coordinates: [Number]
     },
+    isAssigned: {
+        type: Boolean,
+        default: false
+    },
     isOnline: {
         type: Boolean,
         default: false
