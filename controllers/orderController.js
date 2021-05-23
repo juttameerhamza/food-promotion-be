@@ -75,7 +75,12 @@ exports.placeHolder = catchAsync(async (req, res, next) => {
 });
 
 exports.checkRestaurantOrders = catchAsync(async (req, res, next) => {
-    const orders = await Order.find({ restaurant: req.params.restaurantId, orderStatus: req.params.status });
+    const orders = await Order
+        .find({ restaurant: req.params.restaurantId, orderStatus: req.params.status })
+        .lean()
+        .populate('rider')
+        .populate('restaurant')
+        .populate('consumer');
 
     res.status(200).json({
         status: 'success',
