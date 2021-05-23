@@ -179,6 +179,7 @@ exports.getRiderOrders = catchAsync(async (req, res, next) => {
     const order = await Order
         .findOne({ rider: req.params.id, orderStatus: 'preparing' })
         .lean()
+        .populate('product')
         .populate('rider')
         .populate({ path: 'restaurant', populate: { path: 'restaurantProfile' } })
         .populate('consumer');;
