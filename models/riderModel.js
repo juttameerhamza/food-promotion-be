@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
-// location [lat, lng]
+// location [lng, lat]
+// Google Maps lat-lng
 
 const riderSchema = new mongoose.Schema({
     currentLocation: {
@@ -20,6 +21,8 @@ const riderSchema = new mongoose.Schema({
         default: false
     }
 });
+
+riderSchema.index({ currentLocation: '2dsphere' });
 
 const Rider = mongoose.model('Rider', riderSchema);
 

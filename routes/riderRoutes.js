@@ -10,4 +10,8 @@ router
     .route('/location')
     .patch(riderController.updateLocation);
 
+router
+    .route('/status')
+    .patch(riderController.updateStatus)
+
 module.exports = router;

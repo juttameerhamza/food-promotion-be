@@ -5,24 +5,26 @@ const catchAsync = require('../utils/catchAsync');
 const ApiError = require('../utils/apiError');
 
 exports.placeHolder = catchAsync(async (req, res, next) => {
-    // const currentUser = req.user;
+    const currentUser = req.user;
     const { restaurantId, productId } = req.body;
 
     const restaurant = await User.findOne({ _id: restaurantId, role: 'restaurant', isDeleted: false, isActive: true }).lean().populate('restaurantProfile');
-    const [lat, lng] = restaurant.restaurantProfile.restaurantLocation.coordinates;
-    const radius = 0.02 / 6378.1;
-
-    console.log('restaurant', restaurant);
+    const [lng, lat] = restaurant.restaurantProfile.restaurantLocation.coordinates;
+    const radius = 1 / 6378.1;
     
     const riders = await Rider.find({
-        currentLocation: {
+        'currentLocation.coordinates': {
             $geoWithin: {
-                $centerSphere: [[lat, lng], radius]
+                $centerSphere: [[lng, lat], radius]
             }
-        }
+        },
+        isOnline: true,
+        isAssigned: false
     });
-    
-    console.log('riders', riders);
+
+    const riderData = await User.findOne({ riderProfile: riders[0]._id }).lean().populate('riderProfile')
+
+    console.log({ riderData });
 
     res.end();
 });

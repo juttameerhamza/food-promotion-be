@@ -49,8 +49,17 @@ exports.createRider = catchAsync(async (req, res, next) => {
 
 exports.updateLocation = catchAsync(async (req, res, next) => {
     const { currentLocation, riderProfileId } = req.body;
-    console.log(req.body);
     const rider = await Rider.findByIdAndUpdate(riderProfileId, { currentLocation });
+
+    res.status(200).json({
+        status: 'success'
+    });
+});
+
+exports.updateStatus = catchAsync(async (req, res, next) => {
+    const { online, riderProfileId } = req.body;
+
+    const rider = await Rider.findByIdAndUpdate(riderProfileId, { isOnline: online });
 
     res.status(200).json({
         status: 'success'
