@@ -10,4 +10,12 @@ router
 //     .route('/:id')
 //     .get(restaurantController.getOneRestaurant);
 
+router
+    .route('/:id/status')
+    .patch(orderController.changeOrderStatus);
+
+router
+    .route('/restaurant/:restaurantId/:status')
+    .get(orderController.checkRestaurantOrders);
+
 module.exports = router;
