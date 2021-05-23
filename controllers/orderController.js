@@ -176,7 +176,12 @@ exports.changeOrderStatus = catchAsync(async (req, res, next) => {
 });
 
 exports.getRiderOrders = catchAsync(async (req, res, next) => {
-    const order = await Order.findOne({ rider: req.params.id, orderStatus: 'preparing' });
+    const order = await Order
+        .findOne({ rider: req.params.id, orderStatus: 'preparing' })
+        .lean()
+        .populate('rider')
+        .populate({ path: 'restaurant', populate: { path: 'restaurantProfile' } })
+        .populate('consumer');;
 
     res.status(200).json({
         status: 'success',
