@@ -18,4 +18,8 @@ router
     .route('/restaurant/:restaurantId/:status')
     .get(orderController.checkRestaurantOrders);
 
+router
+    .route('/rider/:id')
+    .get(orderController.getRiderOrders);
+
 module.exports = router;

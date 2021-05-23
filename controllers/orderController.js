@@ -88,8 +88,13 @@ exports.checkRestaurantOrders = catchAsync(async (req, res, next) => {
 exports.changeOrderStatus = catchAsync(async (req, res, next) => {
     const order = await Order.findById(req.params.id);
 
+    console.log({ order });
+
     if (req.body.status === 'preparing') {
-        const restaurant = await User.findOne({ _id: restaurantId, role: 'restaurant', isDeleted: false, isActive: true }).lean().populate('restaurantProfile');
+        const restaurant = await User.findOne({ _id: order.restaurant, role: 'restaurant', isDeleted: false, isActive: true }).lean().populate('restaurantProfile');
+
+        console.log({ restaurant });
+
         const [lng, lat] = restaurant.restaurantProfile.restaurantLocation.coordinates;
         const radius = 1 / 6378.1;
 
@@ -103,10 +108,48 @@ exports.changeOrderStatus = catchAsync(async (req, res, next) => {
             isAssigned: false
         });
 
-        if(riders.length > 0) { 
-            order.orderStatus = 'preparing';
-            await order.save();
+        console.log({ riders });
+
+        if (riders.length > 0) {
+            // order.orderStatus = 'preparing';
+            // await order.save();
+            const riderData = await User.findOne({ riderProfile: riders[0]._id }).lean().populate('riderProfile');
+
+            const order = await Order
+                .findByIdAndUpdate(req.params.id, { orderStatus: req.body.status, rider: riderData._id }, { new: true })
+                .lean()
+                .populate('rider')
+                .populate('restaurant')
+                .populate('consumer');
+
+            console.log('whole order', order);
+
+            res.status(200).json({
+                status: 'success',
+                data: {
+                    order
+                }
+            });
+        } else {
+            res.status(200).json({
+                status: 'fail',
+                message: 'No rider found!'
+            });
         }
+
+        // res.status(200).json({
+        //     status: 'success',
+        //     data: {
+        //         order
+        //     }
+        // });
+    } else if (req.body.status === 'picked' || req.body.status === 'delivered') {
+        const order = await Order
+            .findByIdAndUpdate(req.params.id, { orderStatus: req.body.status }, { new: true })
+            .lean()
+            .populate('rider')
+            .populate('restaurant')
+            .populate('consumer');
 
         res.status(200).json({
             status: 'success',
@@ -117,6 +160,17 @@ exports.changeOrderStatus = catchAsync(async (req, res, next) => {
     }
 
     // const order = await Order.findByIdAndUpdate(req.params.id , { orderStatus: req.body.status }, { new: true });
+
+    // res.status(200).json({
+    //     status: 'success',
+    //     data: {
+    //         order
+    //     }
+    // });
+});
+
+exports.getRiderOrders = catchAsync(async (req, res, next) => {
+    const order = await Order.findOne({ rider: req.params.id, orderStatus: 'preparing' });
 
     res.status(200).json({
         status: 'success',
