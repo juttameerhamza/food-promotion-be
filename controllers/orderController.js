@@ -78,6 +78,7 @@ exports.checkRestaurantOrders = catchAsync(async (req, res, next) => {
     const orders = await Order
         .find({ restaurant: req.params.restaurantId, orderStatus: req.params.status })
         .lean()
+        .populate('product')
         .populate('rider')
         .populate('restaurant')
         .populate('consumer');
